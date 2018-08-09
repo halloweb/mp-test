@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <p class="title">程序日刊</p>
+    <p class="title">cnNode社区</p>
     <button open-type="getUserInfo" lang="zh_CN" @getuserinfo="onGotUserInfo">点击授权</button>
   </div>
 </template>
@@ -16,7 +16,7 @@ export default {
       if (e.mp.detail.userInfo) {
         wx.setStorageSync('userInfo', e.mp.detail.userInfo)
         wx.navigateTo({
-          url: '../logs/main'
+          url: '../home/main'
         })
       } else {
         console.log('授权失败')
