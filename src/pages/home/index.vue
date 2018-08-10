@@ -12,8 +12,8 @@
         <swiper-item v-if="tabs.length>0"  v-for="(item,index) in tabs" :key="index">
           <articleList @hasLoad="hasLoad" @hasRefresh="hasRefresh" :isRefresh="isRefresh"  :type="item.type" :activeType="tabs[currentTab]['type']" :minHeight="swiperHeight"></articleList>
         </swiper-item>
-      </swiper>
-    <!-- <bottomNav></bottomNav>   -->
+    </swiper>
+    <bottomNav :activeIndex="0"></bottomNav>  
   </div>
 </template> 
 <script>
@@ -83,13 +83,13 @@ export default {
       this.loadMore = false
     }
   },
-  onReachBottom () {
-    this.loadMore = true
-    console.log('到底了')
-  },
   async onPullDownRefresh () {
     console.log('刷新')
     this.isRefresh = true
+  },
+  onReachBottom () {
+    this.loadMore = true
+    console.log('到底了')
   },
   onLoad () {
     var res = wx.getSystemInfoSync()
@@ -103,7 +103,7 @@ export default {
   .content {
   box-sizing: border-box;
   height: 100%;
-  padding-top: 100rpx;
+  padding: 100rpx 0;
   /* overflow: auto; */
   -webkit-overflow-scrolling: touch;
 }

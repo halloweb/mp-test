@@ -1,8 +1,8 @@
 <template>
     <ul>
-        <!-- <scroll-view scroll-y :style="'height:'+ (minHeight - 200)+'rpx'" @scroll="scroll"> -->
+        <scroll-view scroll-y :style="'height:'+ (minHeight - 200)+'rpx'" @scrolltoupper="toupper" @scrolltolower="tolower" @scroll="handleScroll">
          <li class="list_item"  v-for="(item,index) in listData" :key="index">{{item.title}}</li>
-        <!-- </scroll-view> -->
+        </scroll-view>
     </ul>
 </template>
 <script>
@@ -13,7 +13,8 @@ export default {
     return {
       listData: [],
       pageNumber: 1,
-      pageSize: 10
+      pageSize: 10,
+      scrollTop: 0
     }
   },
   watch: {
@@ -49,14 +50,21 @@ export default {
         this.listData = res.data
         if (this.isRefresh) this.$emit('hasRefresh')
       })
+    },
+    toupper () {
+      wx.startPullDownRefresh()
+    },
+    tolower () {
+      this.pageNumber = this.pageNumber + 1
+      this.getData()
+    },
+    handleScroll (e) {
+      this.scrollTop = e.mp.scrollTop
     }
   }
 }
 </script>
 <style lang="stylus" scoped>
-  ul
-    height 100%
-    overflow-y auto
   .list_item 
       padding 30rpx 20rpx
       border-bottom 1px solid #f4f4f4
