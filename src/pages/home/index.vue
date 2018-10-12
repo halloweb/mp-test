@@ -70,7 +70,7 @@ export default {
     },
     getTabs () {
       fetch('https://api.myjson.com/bins/or6l4').then(res => {
-        // this.tabs = res
+        this.tabs = res
       })
     },
     hasRefresh () {

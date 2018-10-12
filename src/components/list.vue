@@ -1,6 +1,6 @@
 <template>
     <ul>
-        <scroll-view scroll-y :style="'height:'+ (minHeight - 200)+'rpx'" @scrolltoupper="toupper" @scrolltolower="tolower" @scroll="handleScroll">
+        <scroll-view scroll-y :style="'height:'+ (minHeight - 200)+'rpx'" @scrolltolower="tolower" @scroll="handleScroll">
          <li class="list_item"  v-for="(item,index) in listData" :key="index">{{item.title}}</li>
         </scroll-view>
     </ul>
@@ -47,19 +47,27 @@ export default {
         limit: this.pageSize
       }
       fetch('https://cnodejs.org/api/v1/topics', data).then(res => {
-        this.listData = res.data
+        if (this.pageNumber === 1) {
+          console.log('aa')
+          this.listData = res.data
+        } else {
+          console.log('bb')
+          this.listData = [...this.listData, ...res.data]
+          console.log(this.listData)
+        }
         if (this.isRefresh) this.$emit('hasRefresh')
       })
     },
-    toupper () {
-      wx.startPullDownRefresh()
+    handleScroll (e) {
+      console.log(e)
+      this.scrollTop = e.mp.scrollTop
     },
     tolower () {
-      this.pageNumber = this.pageNumber + 1
-      this.getData()
-    },
-    handleScroll (e) {
-      this.scrollTop = e.mp.scrollTop
+      console.log('tol')
+      if (this.loadMore && this.activeType === this.type) {
+        this.pageNumber = this.pageNumber + 1
+        this.getData()
+      }
     }
   }
 }
@@ -69,6 +77,7 @@ export default {
       padding 30rpx 20rpx
       border-bottom 1px solid #f4f4f4
       font-size 30rpx
+      font-weight 600
 </style>
 
 
